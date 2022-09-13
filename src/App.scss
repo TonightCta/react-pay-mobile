@@ -1,5 +1,15 @@
 .App {
   text-align: center;
+  max-width: 750px;
+  height: 100vh;
+  .private-route {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    .router-view {
+      flex: 1;
+    }
+  }
 }
 
 .App-logo {
