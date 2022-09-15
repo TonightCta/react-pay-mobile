@@ -138,3 +138,18 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
+
+
+* {
+    box-sizing: border-box;
+    font-family: '微软雅黑',"Poppins","PingFang SC" !important;
+}
+
+:root:root {
+    --adm-color-primary: #2D3EC7;
+}
+
+input {
+    border: 0;
+    outline: none;
+}

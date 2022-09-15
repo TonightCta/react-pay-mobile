@@ -149,6 +149,9 @@
   },
   "devDependencies": {
     "@types/nprogress": "^0.2.0",
+    "copy-to-clipboard": "^3.3.2",
+    "echarts": "^5.3.3",
+    "html2canvas": "^1.4.1",
     "node-sass": "^7.0.3",
     "nprogress": "^0.2.0",
     "react-router-dom": "^6.3.0"

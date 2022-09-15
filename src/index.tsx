@@ -2,6 +2,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import RouteConfig from './route/router'
+import './assets/icon/iconfont.css'
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
