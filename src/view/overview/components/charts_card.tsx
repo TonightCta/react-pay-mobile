@@ -6,9 +6,10 @@ import * as echarts from 'echarts';
 import html2canvas from 'html2canvas';
 import { useEffect } from 'react';
 import dayjs from 'dayjs'
+import { DateConvert } from '../../../utils';
 
 const today = dayjs();
-const now = new Date(today.subtract(7,'day').toDate());
+const now = new Date(today.subtract(7, 'day').toDate());
 
 const ChartsCard = (): ReactElement<ReactNode> => {
     const [coin, setCoin] = useState<string>('TRX');
@@ -16,7 +17,12 @@ const ChartsCard = (): ReactElement<ReactNode> => {
         { key: 'trx', text: 'TRX' },
         { key: 'usdt', text: 'USDT-TRC20' },
     ];
-    const [selectDateBox, setSelectBox] = useState<boolean>(false);
+    const [selectDateBoxStart, setSelectBoxStart] = useState<boolean>(false);
+    const [selectDateBoxEnd, setSelectBoxEnd] = useState<boolean>(false);
+    const [filterDate, setFilterDate] = useState<{ start: string, end: string }>({
+        start: '',
+        end: ''
+    })
     const option = {
         tooltip: {
             trigger: "axis",
@@ -215,9 +221,12 @@ const ChartsCard = (): ReactElement<ReactNode> => {
             <div className='charts-title-msg'>
                 <p className='msg-name'>经营概况</p>
                 <div className='oper-box'>
-                    <div className='select-date' onClick={() => {
-                        setSelectBox(true)
+                    <div className='select-date other-padding' onClick={() => {
+                        setSelectBoxStart(true)
                     }}>
+                        <p className={`date-text ${!filterDate.end ? 'holder-text' : ''}`}>{filterDate.end ? filterDate.start : '开始时间'}</p>
+                        <p className='mask-'>-</p>
+                        <p className={`date-text ${!filterDate.end ? 'holder-text' : ''}`}>{filterDate.end ? filterDate.end : '结束时间'}</p>
                         <p className='iconfont icon-rili'></p>
                     </div>
                     <Popover.Menu
@@ -232,7 +241,6 @@ const ChartsCard = (): ReactElement<ReactNode> => {
                         trigger='click'
                     >
                         <div className='select-coin'>
-
                             <p>{coin}</p>&nbsp;<p className='iconfont icon-xialajiantouxiaobeifen'></p>
                         </div>
                     </Popover.Menu>
@@ -242,17 +250,39 @@ const ChartsCard = (): ReactElement<ReactNode> => {
                 </div>
             </div>
             <div className='charts-box' id="charts-box"></div>
-            {/* 选择日期 */}
+            {/* 选择日期 - 开始时间 */}
             <DatePicker
                 title='开始时间'
-                visible={selectDateBox}
+                visible={selectDateBoxStart}
                 onClose={() => {
-                    setSelectBox(false)
+                    setSelectBoxStart(false)
                 }}
                 precision="day"
                 max={now}
                 onConfirm={val => {
                     Toast.show(val.toDateString())
+                    setSelectBoxStart(false)
+                    setSelectBoxEnd(true)
+                    setFilterDate({
+                        ...filterDate,
+                        start:DateConvert(new Date(val).getTime(),1)
+                    })
+                }}
+            />
+            <DatePicker
+                title='结束时间'
+                visible={selectDateBoxEnd}
+                onClose={() => {
+                    setSelectBoxEnd(false)
+                }}
+                precision="day"
+                max={new Date()}
+                onConfirm={val => {
+                    Toast.show(val.toDateString());
+                    setFilterDate({
+                        ...filterDate,
+                        end:DateConvert(new Date(val).getTime(),1)
+                    })
                 }}
             />
         </div>

@@ -1,5 +1,5 @@
 
-import { Popover } from 'antd-mobile';
+import { Popover, Toast } from 'antd-mobile';
 import { ReactElement, ReactNode, useState } from 'react';
 
 interface Balance {
@@ -8,7 +8,8 @@ interface Balance {
     title: string,
     tootip?: string,
     count: number,
-    detail: Inner[]
+    detail: Inner[],
+    btn:string,
 }
 
 interface Inner {
@@ -23,6 +24,7 @@ const BalanceCard = (): ReactElement<ReactNode> => {
             uint: 'U',
             title: '可代付',
             count: 0,
+            btn:'deposit',
             detail: [
                 {
                     coin: 'USDT-TRC20',
@@ -36,6 +38,7 @@ const BalanceCard = (): ReactElement<ReactNode> => {
             title: '代付矿工费',
             tootip: '商户代付时链上所需的矿工费',
             count: 0,
+            btn:'deposit',
             detail: [
                 {
                     coin: 'USDT-TRC20',
@@ -48,6 +51,7 @@ const BalanceCard = (): ReactElement<ReactNode> => {
             uint: 'U',
             title: '可提现',
             count: 0,
+            btn:'withdraw',
             detail: [
                 {
                     coin: 'USDT-TRC20',
@@ -60,6 +64,7 @@ const BalanceCard = (): ReactElement<ReactNode> => {
             uint: 'TRX',
             title: '提现矿工费',
             count: 0,
+            btn:'deposit',
             detail: [
                 {
                     coin: 'USDT-TRC20',
@@ -97,30 +102,37 @@ const BalanceCard = (): ReactElement<ReactNode> => {
                     list.map((item: Balance, index: number): ReactElement => {
                         return (
                             <li key={index}>
-                                <img src={item.icon} alt="" />
-                                <div className='balance-inner'>
-                                    <div className='inner-name'>
-                                        <p>{item.title}</p>
-                                        {item.tootip && <Popover
-                                            content={<p className='tooltip-mine'>{item.tootip}</p>}
+                                <div className='left-m'>
+                                    <img src={item.icon} alt="" />
+                                    <div className='balance-inner'>
+                                        <div className='inner-name'>
+                                            <p>{item.title}</p>
+                                            {item.tootip && <Popover
+                                                content={<p className='tooltip-mine'>{item.tootip}</p>}
+                                                trigger='click'
+                                                placement='top'
+                                            >
+                                                <p className='iconfont icon-question-2beifen'></p>
+                                            </Popover>}
+                                        </div>
+                                        <p className='inner-count'>{item.count}&nbsp;{item.uint}</p>
+                                        <Popover
+                                            content={<PopBalance list={item.detail} />}
                                             trigger='click'
-                                            placement='top'
+                                            placement='bottom'
                                         >
-                                            <p className='iconfont icon-question-2beifen'></p>
-                                        </Popover>}
+                                            <p className='coin-detail'>
+                                                币种明细
+                                                <span className='iconfont icon-xialajiantouxiaobeifen'></span>
+                                            </p>
+                                        </Popover>
                                     </div>
-                                    <p className='inner-count'>{item.count}&nbsp;{item.uint}</p>
-                                    <Popover
-                                        content={<PopBalance list={item.detail} />}
-                                        trigger='click'
-                                        placement='bottom'
-                                    >
-                                        <p className='coin-detail'>
-                                            币种明细
-                                            <span className='iconfont icon-xialajiantouxiaobeifen'></span>
-                                        </p>
-                                    </Popover>
                                 </div>
+                                <div className='oper-btn'>
+                                    <button color='default' onClick={() => {
+                                        Toast.show('移动站功能建设中，如需使用此功能请移步至PC站')
+                                    }}>{item.btn === 'deposit' ? '充值' : '提现'}</button>
+                                </div> 
                             </li>
                         )
                     })

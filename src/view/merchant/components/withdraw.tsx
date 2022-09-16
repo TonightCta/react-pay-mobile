@@ -4,6 +4,9 @@ import copy from 'copy-to-clipboard';
 import { DotLoading, List, PullToRefresh, Toast } from 'antd-mobile';
 import { sleep } from 'antd-mobile/es/utils/sleep'
 import { PullStatus } from 'antd-mobile/es/components/pull-to-refresh';
+import { useContext } from 'react';
+import { IBPayMobile } from '../../../route/router';
+import { useEffect } from 'react';
 
 
 interface Withdraw {
@@ -24,6 +27,11 @@ const statusRecord: Record<PullStatus, ReactElement | string> = {
 }
 
 const WithdrawList = (): ReactElement<ReactNode> => {
+    const { state } = useContext(IBPayMobile);
+    useEffect(() => {
+        const filter = state.filter_withdraw ? JSON.parse(state.filter_withdraw) : '';
+        console.log(filter)
+    },[state.filter_withdraw])
     const list: Withdraw[] = [
         {
             icon: require('../../../assets/images/coin.png'),
@@ -43,7 +51,7 @@ const WithdrawList = (): ReactElement<ReactNode> => {
             address: 'TR4FZ7ZLKfgnKoVkjvNjrkn',
             amount: 8640.0000
         },
-    ]
+    ];
     return (
         <div className='withdraw-list list-public'>
             <PullToRefresh

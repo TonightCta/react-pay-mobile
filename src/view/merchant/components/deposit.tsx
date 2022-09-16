@@ -3,7 +3,8 @@ import { DotLoading, List, PullToRefresh } from 'antd-mobile';
 import { RightOutline } from 'antd-mobile-icons';
 import { PullStatus } from 'antd-mobile/es/components/pull-to-refresh';
 import { sleep } from 'antd-mobile/es/utils/sleep';
-import { ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode, useContext, useEffect } from 'react';
+import { IBPayMobile } from '../../../route/router';
 
 interface Deposit {
     icon: string,
@@ -21,6 +22,11 @@ const statusRecord: Record<PullStatus, ReactElement | string> = {
     complete: '好啦',
 }
 const DepositList = (): ReactElement<ReactNode> => {
+    const { state } = useContext(IBPayMobile);
+    useEffect(() => {
+        const filter = state.filter_deposit ? JSON.parse(state.filter_deposit) : '';
+        console.log(filter)
+    },[state.filter_deposit])
     const list: Deposit[] = [
         {
             icon: require('../../../assets/images/coin.png'),

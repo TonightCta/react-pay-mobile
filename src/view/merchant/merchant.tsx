@@ -22,7 +22,7 @@ const MerchantView = (): ReactElement<ReactNode> => {
                             list_type: Number(e)
                         }
                     })
-                }} defaultActiveKey="1" style={{ '--title-font-size': '14px' }}>
+                }} defaultActiveKey={String(state.list_type)} style={{ '--title-font-size': '14px' }}>
                     <Tabs.Tab title='提币订单' key='1'>
                         <WithdrawList />
                     </Tabs.Tab>

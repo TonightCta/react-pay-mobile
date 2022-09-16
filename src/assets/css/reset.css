@@ -153,3 +153,7 @@ input {
     border: 0;
     outline: none;
 }
+.adm-popup-body{
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}

@@ -125,7 +125,11 @@
         border-radius: 4px;
         margin-top: 16px;
         display: flex;
+        justify-content: space-between;
         align-items: center;
+        .left-m {
+          display: flex;
+        }
         img {
           width: 52px;
           height: 52px;
@@ -146,7 +150,7 @@
             }
           }
           .inner-count {
-            font-size: 26px;
+            font-size: 20px;
             color: #666;
             font-weight: 500;
             margin: 8px 0;
@@ -160,6 +164,19 @@
             }
           }
         }
+        .oper-btn {
+          height: 30px;
+          display: flex;
+          button {
+            width: 76px;
+            height: 30px;
+            outline: none;
+            border: 1px solid #eee;
+            background-color: #f8f8f8;
+            font-size: 14px;
+            color: #666;
+          }
+        }
       }
     }
   }
@@ -171,7 +188,8 @@
     .charts-title-msg {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      flex-direction: column;
+      align-items: flex-start;
       .msg-name {
         font-size: 16px;
         color: #304888;
@@ -189,21 +207,49 @@
       .oper-box {
         display: flex;
         align-items: center;
+        justify-content: flex-end;
+        width: 100%;
         font-size: 12px;
+        margin-top: 16px;
         .select-date {
           padding: 5px;
           border: 1px solid #eee;
           border-radius: 4px;
           margin-right: 8px;
           height: 22px;
+          display: flex;
           p {
             font-size: 12px;
+          }
+          .iconfont {
+            color: #999;
+          }
+          .mask- {
+            color: #999;
+            margin: 0 6px;
+          }
+          .date-text {
+            color: #666;
+            font-weight: 500;
+          }
+          .icon-rili {
+            margin-left: 8px;
+          }
+          .holder-text {
+            font-weight: 400;
             color: #999;
           }
         }
-        .down-charts{
-            margin-left: 8px;
-            margin-right: 0;
+        .other-padding{
+            padding: 5px 7px;
+        }
+        .down-charts {
+          margin-left: 8px;
+          margin-right: 0;
+          .iconfont{
+            color: #4266FF;
+          }
+          border: 1px solid rgba(66, 102, 255, 0.24);
         }
         .select-coin {
           display: flex;
@@ -219,17 +265,17 @@
         }
       }
     }
-    .charts-box{
-        width: 100%;
-        height: 238px;
+    .charts-box {
+      width: 100%;
+      height: 238px;
     }
   }
 }
-.adm-popover-menu-item-text{
-    font-size: 14px;
-    color: #666;
-    padding-top: 10px;
-    padding-bottom: 10px;
+.adm-popover-menu-item-text {
+  font-size: 14px;
+  color: #666;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 .adm-popover-inner-content {
   padding: 0;
