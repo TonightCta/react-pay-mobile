@@ -1,6 +1,10 @@
 
 import { Popover, Toast } from 'antd-mobile';
 import { ReactElement, ReactNode, useState } from 'react';
+import { useContext } from 'react';
+import { IBPayMobile } from '../../../route/router';
+import { useEffect } from 'react';
+import { WalletViewApi } from '../../../request/api';
 
 interface Balance {
     icon: string,
@@ -9,74 +13,102 @@ interface Balance {
     tootip?: string,
     count: number,
     detail: Inner[],
-    btn:string,
+    btn: string,
 }
 
 interface Inner {
     coin: string,
-    count: number
+    amount: number
 }
 
+const source = [
+    {
+        icon: require('../../../assets/images/balance_card/card_1.png'),
+        uint: 'U',
+        title: '可代付',
+        count: 0,
+        btn: 'deposit',
+        detail: [
+            {
+                coin: 'USDT-TRC20',
+                amount: 0
+            }
+        ]
+    },
+    {
+        icon: require('../../../assets/images/balance_card/card_2.png'),
+        uint: 'TRX',
+        title: '代付矿工费',
+        tootip: '商户代付时链上所需的矿工费',
+        count: 0,
+        btn: 'deposit',
+        detail: [
+            {
+                coin: 'USDT-TRC20',
+                amount: 0
+            }
+        ]
+    },
+    {
+        icon: require('../../../assets/images/balance_card/card_3.png'),
+        uint: 'U',
+        title: '可提现',
+        count: 0,
+        btn: 'withdraw',
+        detail: [
+            {
+                coin: 'USDT-TRC20',
+                amount: 0
+            }
+        ]
+    },
+    {
+        icon: require('../../../assets/images/balance_card/card_4.png'),
+        uint: 'TRX',
+        title: '提现矿工费',
+        count: 0,
+        btn: 'deposit',
+        detail: [
+            {
+                coin: 'USDT-TRC20',
+                amount: 0
+            },
+            {
+                coin: 'TRX',
+                amount: 0
+            }
+        ]
+    },
+]
+
 const BalanceCard = (): ReactElement<ReactNode> => {
-    const [list, setList] = useState<Balance[]>([
-        {
-            icon: require('../../../assets/images/balance_card/card_1.png'),
-            uint: 'U',
-            title: '可代付',
-            count: 0,
-            btn:'deposit',
-            detail: [
-                {
-                    coin: 'USDT-TRC20',
-                    count: 0
-                }
-            ]
-        },
-        {
-            icon: require('../../../assets/images/balance_card/card_2.png'),
-            uint: 'TRX',
-            title: '代付矿工费',
-            tootip: '商户代付时链上所需的矿工费',
-            count: 0,
-            btn:'deposit',
-            detail: [
-                {
-                    coin: 'USDT-TRC20',
-                    count: 0
-                }
-            ]
-        },
-        {
-            icon: require('../../../assets/images/balance_card/card_3.png'),
-            uint: 'U',
-            title: '可提现',
-            count: 0,
-            btn:'withdraw',
-            detail: [
-                {
-                    coin: 'USDT-TRC20',
-                    count: 0
-                }
-            ]
-        },
-        {
-            icon: require('../../../assets/images/balance_card/card_4.png'),
-            uint: 'TRX',
-            title: '提现矿工费',
-            count: 0,
-            btn:'deposit',
-            detail: [
-                {
-                    coin: 'USDT-TRC20',
-                    count: 0
-                },
-                {
-                    coin: 'TRX',
-                    count: 0
-                }
-            ]
-        },
-    ]);
+    const [list, setList] = useState<Balance[]>(source);
+    const { state } = useContext(IBPayMobile);
+    useEffect(() => {
+        return () => {
+            setList(source)
+        }
+    }, []);
+    useEffect(() => {
+        walletViewService();
+    },[state.merchant_id])
+    const walletViewService = async () => {
+        const { merchant_id } = state;
+        const reuslt = await WalletViewApi({
+            mch_id: merchant_id
+        });
+        const list = source;
+        const { data } = reuslt;
+        list[0].count = data.mchAvailableTotal;
+        list[0].detail = data.mchAvailable;
+        list[1].count = data.mchFeeAvailableTotal;
+        list[1].detail = data.mchFeeAvailable;
+        list[2].count = data.userAvailableTotal;
+        list[2].detail = data.userAvailable;
+        list[3].count = data.userFeeAvailableTotal;
+        list[3].detail = data.userFeeAvailable;
+        setList([...list])
+    }
     const PopBalance = (props: { list: Inner[] }): ReactElement => {
         return (
             <div className='popver-content'>
@@ -86,7 +118,7 @@ const BalanceCard = (): ReactElement<ReactNode> => {
                             return (
                                 <li key={index}>
                                     <p>{item.coin}</p>
-                                    <p>{item.count}</p>
+                                    <p>{item.amount}</p>
                                 </li>
                             )
                         })
@@ -115,7 +147,7 @@ const BalanceCard = (): ReactElement<ReactNode> => {
                                                 <p className='iconfont icon-question-2beifen'></p>
                                             </Popover>}
                                         </div>
-                                        <p className='inner-count'>{item.count}&nbsp;{item.uint}</p>
+                                        <p className='inner-count'>{Number(item.count).toFixed(4)}&nbsp;{item.uint}</p>
                                         <Popover
                                             content={<PopBalance list={item.detail} />}
                                             trigger='click'
@@ -132,7 +164,7 @@ const BalanceCard = (): ReactElement<ReactNode> => {
                                     <button color='default' onClick={() => {
                                         Toast.show('移动站功能建设中，如需使用此功能请移步至PC站')
                                     }}>{item.btn === 'deposit' ? '充值' : '提现'}</button>
-                                </div> 
+                                </div>
                             </li>
                         )
                     })

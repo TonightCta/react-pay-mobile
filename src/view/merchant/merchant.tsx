@@ -17,6 +17,18 @@ const MerchantView = (): ReactElement<ReactNode> => {
             <div className='tabs-mine'>
                 <Tabs onChange={(e) => {
                     dispatch({
+                        type:Type.SET_WITHDRAW_FILTER,
+                        payload:{
+                            filter_withdraw:''
+                        }
+                    })
+                    dispatch({
+                        type:Type.SET_DEPOSIT_FILTER,
+                        payload:{
+                            filter_deposit:''
+                        }
+                    })
+                    dispatch({
                         type: Type.SET_LIST_TYPE,
                         payload: {
                             list_type: Number(e)

@@ -142,7 +142,7 @@ table {
 
 * {
     box-sizing: border-box;
-    font-family: '微软雅黑',"Poppins","PingFang SC" !important;
+    font-family: '微软雅黑', "Poppins", "PingFang SC" !important;
 }
 
 :root:root {
@@ -153,7 +153,14 @@ input {
     border: 0;
     outline: none;
 }
-.adm-popup-body{
+
+.adm-popup-body {
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
+}
+
+button {
+    border: 0;
+    outline: none;
+    border-radius: 4px;
 }

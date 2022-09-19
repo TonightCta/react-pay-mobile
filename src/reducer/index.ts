@@ -3,11 +3,12 @@
 import { Context, IAction, State, Type } from "../utils/types";
 
 export const defaultState: State = {
-    test: localStorage.getItem('test') as string || '',
     app_token: localStorage.getItem('token_ib_mobile') as string || '',
+    account: localStorage.getItem('account') || '{}',
     list_type: Number(sessionStorage.getItem('list_type')) || 1,
-    filter_withdraw: sessionStorage.getItem('filter_withdraw') as string || '',
-    filter_deposit: sessionStorage.getItem('filter_deposit') as string || '',
+    filter_withdraw: '',
+    filter_deposit: '',
+    merchant_id:localStorage.getItem('merchant_id') || '',
 };
 
 export const defaultContext: Context = {
@@ -22,12 +23,12 @@ export const defaultStateInit = (defaultState: State) => {
 export const initState = (state: State, action: IAction) => {
     const { type, payload } = action;
     switch (type) {
-        case Type.SET_TEST:
-            localStorage.setItem('test', payload.test as string);
-            return { ...state, test: payload.test };
         case Type.SET_TOKEN:
             localStorage.setItem('token_ib_mobile', payload.app_token as string);
             return { ...state, app_token: payload.app_token }
+        case Type.SET_ACCOUNT:
+            localStorage.setItem('account', payload.account as string);
+            return { ...state, account: payload.account }
         case Type.SET_LIST_TYPE:
             sessionStorage.setItem('list_type', String(payload.list_type));
             return { ...state, list_type: payload.list_type }
@@ -37,6 +38,9 @@ export const initState = (state: State, action: IAction) => {
         case Type.SET_DEPOSIT_FILTER:
             sessionStorage.setItem('filter_deposit', payload.filter_deposit as string);
             return { ...state, filter_deposit: payload.filter_deposit }
+        case Type.SET_MERCHANT:
+            localStorage.setItem('merchant_id',payload.merchant_id as string);
+            return { ...state,merchant_id:payload.merchant_id }
         default:
             return state;
     }

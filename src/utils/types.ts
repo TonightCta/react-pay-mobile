@@ -1,22 +1,26 @@
 
 export interface State{
-    test?:string,
     app_token?:string,
+    account?:string,
     list_type?:number,
     filter_withdraw?:string,
-    filter_deposit?:string
+    filter_deposit?:string,
+    merchant_id?:string
 }
 
 export enum Type{
-    SET_TEST = 'set_test',
     SET_TOKEN = 'set_token',
     SET_LIST_TYPE = 'set_list_type',
     SET_WITHDRAW_FILTER = 'set_withdraw_filter',
-    SET_DEPOSIT_FILTER = 'set_deposit_filter'
+    SET_DEPOSIT_FILTER = 'set_deposit_filter',
+    SET_ACCOUNT = 'set_account',
+    SET_MERCHANT = 'set_merchant'
 };
 
 export interface FilterW{
     merchant:string,
+    merchant_name:string,
+    merchant_email:string,
     order_id:string,
     address:string,
     start:string,
@@ -30,6 +34,8 @@ export interface FilterW{
 
 export interface FilterD{
     merchant:string,
+    merchant_name:string,
+    merchant_email:string,
     coin:string,
     order_id:string,
     address:string,
@@ -61,4 +67,10 @@ export interface Login{
     email:string,
     password:string,
     auth_code:number | string
+}
+
+export interface IResponse {
+    code: string | number,
+    data: any,
+    message: string
 }

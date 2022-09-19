@@ -1,4 +1,4 @@
-import { Button } from "antd-mobile";
+import { Button, Toast } from "antd-mobile";
 import { LeftOutline } from "antd-mobile-icons";
 import { ReactElement, ReactNode, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { Find, Login } from "../../utils/types";
@@ -7,7 +7,9 @@ import './index.scss'
 import { IBPayMobile } from "../../route/router";
 import { Type } from "../../utils/types";
 import { useNavigate } from "react-router-dom";
-// import { Button } from 'antd-mobile';
+import { LoginApi, MerchantInfoApi, SendCodeApi, UpdatePassApi } from "../../request/api";
+import { CheckEmail } from "../../utils";
+// import { Button, Toast } from 'antd-mobile';
 
 
 const LoginView = (): ReactElement<ReactNode> => {
@@ -43,10 +45,12 @@ const LoginView = (): ReactElement<ReactNode> => {
     const [indexType, setIndexType] = useState<number>(1);
     //查看密码
     const [viewType, setViewType] = useState<string>('password');
+    //登录等待
+    const [waitLogin, setWaitLogin] = useState<boolean>(false);
     //Find view password
-    const [viewPass,setViewPass] = useState<{new:string,repeat:string}>({
-        new:'password',
-        repeat:'password'
+    const [viewPass, setViewPass] = useState<{ new: string, repeat: string }>({
+        new: 'password',
+        repeat: 'password'
     })
     //输入信息
     const [inpLogin, setInpLogin] = useState<Login>({
@@ -59,7 +63,121 @@ const LoginView = (): ReactElement<ReactNode> => {
         code: '',
         new_pass: '',
         repeat_pass: ''
-    })
+    });
+    //登录
+    const LoginService = async () => {
+        if (!inpLogin.email) {
+            Toast.show('请输入邮箱地址');
+            return;
+        };
+        if (!CheckEmail(inpLogin.email)) {
+            Toast.show('请输入正确的邮箱地址');
+            return
+        };
+        if (!inpLogin.password) {
+            Toast.show('请输入登录密码');
+            return
+        };
+        setWaitLogin(true)
+        const result = await LoginApi({
+            email: inpLogin.email,
+            loginMode: "pwd",
+            ga_code: inpLogin.auth_code,
+            password: inpLogin.password,
+            pushId: "11",
+        });
+        setWaitLogin(false);
+        const { data, code } = result;
+        if (code !== 200) {
+            Toast.show(data.message);
+            return;
+        };
+        dispatch({
+            type: Type.SET_TOKEN,
+            payload: {
+                app_token: `${data.token_type} ${data.access_token}`
+            }
+        });
+        localStorage.setItem('token_ib_mobile', `${data.token_type} ${data.access_token}`)
+        const info = await MerchantInfoApi({});
+        dispatch({
+            type:Type.SET_MERCHANT,
+            payload:{
+                merchant_id:info.data.merchantInfo.mch_id
+            }
+        })
+        dispatch({
+            type: Type.SET_ACCOUNT,
+            payload: {
+                account: JSON.stringify(info.data)
+            }
+        });
+        navigate('/')
+    };
+    //发送验证码
+    const SendCodeService = async () => {
+        if (!findMsg.email) {
+            Toast.show('请输入邮箱地址');
+            return;
+        };
+        if (!CheckEmail(findMsg.email)) {
+            Toast.show('请输入正确的邮箱地址');
+            return;
+        };
+        // scene:1
+        const result = await SendCodeApi({
+            scene: 4,
+            email: findMsg.email
+        });
+        const { code } = result;
+        if (code !== 200) {
+            Toast.show(result.message);
+            return;
+        };
+        Toast.show('验证码发送成功');
+        countDown()
+    };
+    //修改密码
+    const UpdatePassService = async () => {
+        if (!findMsg.email) {
+            Toast.show('请输入邮箱地址');
+            return;
+        };
+        if (!CheckEmail(findMsg.email)) {
+            Toast.show('请输入正确的邮箱地址');
+            return;
+        }
+        if (!findMsg.code) {
+            Toast.show('请输入验证码');
+            return;
+        }
+        if (!findMsg.new_pass) {
+            Toast.show('请输入新密码');
+            return
+        }
+        if (!findMsg.repeat_pass) {
+            Toast.show('请再次输入新密码');
+            return;
+        }
+        if (findMsg.new_pass !== findMsg.repeat_pass) {
+            Toast.show('两次输入密码不一致');
+            return
+        };
+        setWaitLogin(true)
+        const result = await UpdatePassApi({
+            email: findMsg.email,
+            code: findMsg.code,
+            password: findMsg.repeat_pass
+        });
+        setWaitLogin(false)
+        const { code } = result;
+        if (code !== 200) {
+            Toast.show(result.message);
+            return
+        };
+        Toast.show('修改成功');
+        setIndexType(1);
+    }
     return (
         <div className="login-view">
             <div className="logo-box">
@@ -125,14 +243,8 @@ const LoginView = (): ReactElement<ReactNode> => {
                         setIndexType(2)
                     }}>忘记密码？</p>
                     <div className="oper-btn">
-                        <Button color="primary" block onClick={() => {
-                            dispatch({
-                                type:Type.SET_TOKEN,
-                                payload:{
-                                    app_token:'test_token'
-                                }
-                            });
-                            navigate('/')
+                        <Button color="primary" loading={waitLogin} block onClick={() => {
+                            LoginService()
                         }}>登录</Button>
                     </div>
                 </div>
@@ -169,7 +281,7 @@ const LoginView = (): ReactElement<ReactNode> => {
                                 }} autoComplete="new-password" />
                             </div>
                             <div className="send-code" onClick={count === 60 ? () => {
-                                countDown()
+                                SendCodeService()
                             } : () => { }}>
                                 {count === 60 ? '获取验证码' : `${count}s`}
                             </div>
@@ -188,7 +300,7 @@ const LoginView = (): ReactElement<ReactNode> => {
                             <div className={`iconfont other-icon ${viewPass.new === 'password' ? 'icon-yanjing-guanbeifen' : 'icon-yanjing-guan'}`} onClick={() => {
                                 setViewPass({
                                     ...viewPass,
-                                    new:viewPass.new === 'password' ? 'text' : 'password'
+                                    new: viewPass.new === 'password' ? 'text' : 'password'
                                 })
                             }}></div>
                         </div>
@@ -206,13 +318,13 @@ const LoginView = (): ReactElement<ReactNode> => {
                             <div className={`iconfont other-icon ${viewPass.repeat === 'password' ? 'icon-yanjing-guanbeifen' : 'icon-yanjing-guan'}`} onClick={() => {
                                 setViewPass({
                                     ...viewPass,
-                                    repeat:viewPass.repeat === 'password' ? 'text' : 'password'
+                                    repeat: viewPass.repeat === 'password' ? 'text' : 'password'
                                 })
                             }}></div>
                         </div>
                     </div>
                     <div className="oper-btn">
-                        <Button color="primary" block>确认</Button>
+                        <Button color="primary" loading={waitLogin} block onClick={() => { UpdatePassService() }}>确认</Button>
                     </div>
                 </div>
             }

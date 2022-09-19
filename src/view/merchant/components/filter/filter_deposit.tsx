@@ -4,9 +4,9 @@ import { CloseOutline, DownOutline } from 'antd-mobile-icons';
 import { ReactElement, ReactNode, useState } from 'react';
 import { FilterD, Type } from '../../../../utils/types';
 import './index.scss'
-import SelectCoin from './select_coin';
-import SelectDate from './select_date';
-import SelectMerchant from './select_merchant';
+import SelectCoin from './components/select_coin';
+import SelectDate from './components/select_date';
+import SelectMerchant from './components/select_merchant';
 import { useContext } from 'react';
 import { IBPayMobile } from '../../../../route/router';
 
@@ -19,6 +19,8 @@ interface Filter {
 
 const source: FilterD = {
     merchant: '',
+    merchant_name:'',
+    merchant_email:'',
     coin: '',
     order_id: '',
     address: '',
@@ -26,23 +28,13 @@ const source: FilterD = {
     end: '',
     min: '',
     max: '',
-    hash: ''
+    hash: '',
 };
 
 const FilterDeposit = (): ReactElement<ReactNode> => {
     const { dispatch } = useContext(IBPayMobile)
     const [filterBox, setFilterBox] = useState<boolean>(false);
-    const [filterMsg, setFilterMsg] = useState<FilterD>({
-        merchant: '',
-        coin: '',
-        order_id: '',
-        address: '',
-        start: '',
-        end: '',
-        min: '',
-        max: '',
-        hash: ''
-    });
+    const [filterMsg, setFilterMsg] = useState<FilterD>(source);
     const [selectPopup, setSelectPopup] = useState<Filter>({
         merchant: false,
         coin: false,
@@ -55,6 +47,7 @@ const FilterDeposit = (): ReactElement<ReactNode> => {
                 console.log('充币筛选');
                 setFilterBox(true);
             }}></p>
+            {/* 筛选弹框 */}
             <Popup visible={filterBox} onMaskClick={() => {
                 setFilterBox(false)
             }}>
@@ -74,7 +67,7 @@ const FilterDeposit = (): ReactElement<ReactNode> => {
                                     merchant: true
                                 })
                             }}>
-                                <p>{filterMsg.merchant ? filterMsg.merchant : '请选择商家'}</p>
+                                <p>{filterMsg.merchant ? filterMsg.merchant_name : '请选择商家'}</p>
                                 <span><DownOutline /></span>
                             </div>
                         </div>
@@ -182,16 +175,19 @@ const FilterDeposit = (): ReactElement<ReactNode> => {
                                 payload: {
                                     filter_deposit: JSON.stringify(filterMsg)
                                 }
-                            })
+                            });
+                            setFilterBox(false)
                         }}>确认</Button>
                     </div>
                 </div>
             </Popup>
             {/* 选择商家 */}
-            <SelectMerchant value={selectPopup.merchant} merchartResult={(value: string) => {
+            <SelectMerchant value={selectPopup.merchant} merchartResult={(value: string,name:string,email:string) => {
                 setFilterMsg({
                     ...filterMsg,
-                    merchant: value
+                    merchant: value,
+                    merchant_name:name,
+                    merchant_email:email
                 })
             }} resetValue={(value: boolean) => {
                 setSelectPopup({

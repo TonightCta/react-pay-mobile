@@ -1,12 +1,28 @@
 
-import { ReactElement, ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { ReactElement, ReactNode, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { AppOutline, UnorderedListOutline } from 'antd-mobile-icons';
 import { TabBar } from 'antd-mobile'
 import './index.scss'
+import { useEffect } from 'react';
 
 const NavBottom = (): ReactElement<ReactNode> => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const [activeRouter, setActiveRouter] = useState<string>('home')
+    useEffect(() => {
+        const { pathname } = location;
+        switch (pathname) {
+            case '/':
+                setActiveRouter('home')
+                break;
+            case '/merchant':
+                setActiveRouter('todo');
+                break;
+            default:
+                setActiveRouter('home')
+        }
+    }, [])
     const tabs = [
         {
             key: 'home',
@@ -24,15 +40,18 @@ const NavBottom = (): ReactElement<ReactNode> => {
             <TabBar onChange={(e) => {
                 switch (e) {
                     case 'home':
-                        navigate('/')
+                        navigate('/');
+                        setActiveRouter('home')
                         break;
                     case 'todo':
                         navigate('/merchant');
+                        setActiveRouter('todo');
                         break;
                     default:
+                        setActiveRouter('home')
                         navigate('/')
                 }
-            }}>
+            }} activeKey={activeRouter}>
                 {
                     tabs.map((item): ReactElement => {
                         return (

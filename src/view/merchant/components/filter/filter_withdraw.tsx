@@ -6,9 +6,9 @@ import { useContext } from 'react';
 import './index.scss'
 import { CloseOutline, DownOutline } from 'antd-mobile-icons';
 import { FilterW, Type } from '../../../../utils/types';
-import SelectMerchant from './select_merchant';
-import SelectDate from './select_date';
-import SelectCoin from './select_coin';
+import SelectMerchant from './components/select_merchant';
+import SelectDate from './components/select_date';
+import SelectCoin from './components/select_coin';
 import ActionSheet, { Action } from 'antd-mobile/es/components/action-sheet';
 
 interface Select {
@@ -20,13 +20,15 @@ interface Select {
 }
 
 const actions: Action[] = [
-    { text: '提币中', key: '1' },
-    { text: '提币完成', key: '2' },
-    { text: '已拒绝', key: '3' },
+    { text: '提币中', key: '0' },
+    { text: '提币完成', key: '3' },
+    { text: '已拒绝', key: '2' },
     { text: '取消', key: '4' },
 ]
 const source: FilterW = {
     merchant: '',
+    merchant_name: '',
+    merchant_email: '',
     order_id: '',
     address: '',
     start: '',
@@ -48,24 +50,14 @@ const FilterWithdraw = (): ReactElement<ReactNode> => {
         dateType: 1,
         status: false
     })
-    const [filterMsg, setFilterMsg] = useState<FilterW>({
-        merchant: '',
-        order_id: '',
-        address: '',
-        start: '',
-        end: '',
-        min: '',
-        max: '',
-        hash: '',
-        coin: '',
-        status: '',
-    });
+    const [filterMsg, setFilterMsg] = useState<FilterW>(source);
     return (
         <div className='wihdraw-deposit filter-public'>
             <p className='iconfont icon-shaixuan' onClick={() => {
                 console.log('提币筛选');
                 setFilterBox(true);
             }}></p>
+            {/* 筛选弹框 */}
             <Popup visible={filterBox} onMaskClick={() => {
                 setFilterBox(false)
             }}>
@@ -84,7 +76,7 @@ const FilterWithdraw = (): ReactElement<ReactNode> => {
                     }}>
                         <p className='inner-label'>商家</p>
                         <div className='input-inner'>
-                            <input type="text" value={filterMsg.merchant} onChange={() => { }} disabled placeholder='请选择商家' />
+                            <input type="text" value={`${filterMsg.merchant_name ? `${filterMsg.merchant_name}(${filterMsg.merchant_email})` : ''}`} onChange={() => { }} disabled placeholder='请选择商家' />
                             <DownOutline />
                         </div>
                     </div>
@@ -205,16 +197,19 @@ const FilterWithdraw = (): ReactElement<ReactNode> => {
                                 payload: {
                                     filter_withdraw: JSON.stringify(filterMsg)
                                 }
-                            })
+                            });
+                            setFilterBox(false)
                         }}>确认</Button>
                     </div>
                 </div>
             </Popup>
             {/* 选择商家 */}
-            <SelectMerchant merchartResult={(value: string) => {
+            <SelectMerchant merchartResult={(value: string, name: string, email: string) => {
                 setFilterMsg({
                     ...filterMsg,
-                    merchant: value
+                    merchant: value,
+                    merchant_name: name,
+                    merchant_email: email
                 })
             }} resetValue={(value: boolean) => {
                 setSelectPopup({
