@@ -54,7 +54,6 @@ const FilterWithdraw = (): ReactElement<ReactNode> => {
     return (
         <div className='wihdraw-deposit filter-public'>
             <p className='iconfont icon-shaixuan' onClick={() => {
-                console.log('提币筛选');
                 setFilterBox(true);
             }}></p>
             {/* 筛选弹框 */}

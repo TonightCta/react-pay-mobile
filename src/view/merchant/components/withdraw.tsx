@@ -254,6 +254,7 @@ const WithdrawList = (): ReactElement<ReactNode> => {
             status: filter.status ? filter.status : '',
             merchant_id: filter.merchant ? filter.merchant : '',
             limit: 10,
+            isMerchant:1,
             page: _page ? _page : page
         }
         const result = await WithdrawListApi(params);
