@@ -66,6 +66,7 @@ const source = [
         icon: require('../../../assets/images/balance_card/card_4.png'),
         uint: 'TRX',
         title: '提现矿工费',
+        tootip: '商户提现时链上所需的矿工费',
         count: 0,
         btn: 'deposit',
         detail: [

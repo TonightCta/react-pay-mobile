@@ -47,7 +47,7 @@
         padding-top: 0;
       }
       .adm-dialog-content {
-        padding: 15px;
+        padding: 20px;
         padding-top: 20px;
         .detail-content {
           position: relative;
@@ -93,7 +93,8 @@
                 flex: 1;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                text-align: right;
+                text-align: left;
+                color: #999;
               }
               .iconfont {
                 margin-left: 12px;
@@ -103,12 +104,13 @@
               .strong-text {
                 font-size: 16px;
                 font-weight: 500;
-                color: #4266ff;
+                color: #4266ff!important;
               }
             }
             li:last-child {
               margin-top: 16px;
               justify-content: flex-end;
+              margin-bottom: 0;
               button {
                 height: 28px;
                 background-color: #4266ff;
@@ -237,8 +239,7 @@
         padding-top: 0;
       }
       .adm-dialog-content {
-        padding: 12px;
-        padding-top: 10px;
+        padding: 20px;
         .hash-content {
           .oper-title {
             font-size: 14px;
@@ -299,15 +300,15 @@
           ul {
             li {
               .withdraw-pending {
-                color: #ff9a00;
+                color: #ff9a00!important;
                 font-weight: 500;
               }
               .withdraw-reject {
-                color: #f0554c;
+                color: #f0554c!important;
                 font-weight: 500;
               }
               .withdraw-done{
-                color: #12BE8B;
+                color: #12BE8B!important;
                 font-weight: 500;
               }
             }

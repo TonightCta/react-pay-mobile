@@ -164,14 +164,14 @@ const FilterWithdraw = (): ReactElement<ReactNode> => {
                                     })
                                 }} placeholder='最小金额' />
                             </div>
-                            {/* <div className='date-mask'></div> */}
+                            <div className='date-mask'></div>
                             <div className='date-inner'>
                                 <input type="number" value={filterMsg.max} onChange={(e) => {
                                     setFilterMsg({
                                         ...filterMsg,
                                         max: e.target.value
                                     })
-                                }} placeholder='最小金额' />
+                                }} placeholder='最大金额' />
                             </div>
                         </div>
                     </div>

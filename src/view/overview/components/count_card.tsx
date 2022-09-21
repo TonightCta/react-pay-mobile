@@ -19,6 +19,7 @@ interface Card {
     more: Inner[],
     more_icon?: string,
     uint?: string,
+    bg_icon:string,
 }
 
 const source = [
@@ -27,7 +28,8 @@ const source = [
         title: '总商户',
         count: 0,
         background: 'linear-gradient(47deg, #FF98B7 0%, #FF7398 100%)',
-        more: []
+        more: [],
+        bg_icon:require('../../../assets/images/count_card/card_1.png')
     },
     {
         icon: 'icon-a-bianzu9',
@@ -55,7 +57,8 @@ const source = [
             }
         ],
         uint: 'U',
-        more_icon: require('../../../assets/images/count_card/arrow_1.png')
+        more_icon: require('../../../assets/images/count_card/arrow_1.png'),
+        bg_icon:require('../../../assets/images/count_card/card_2.png')
     },
     {
         icon: 'icon-a-bianzu501',
@@ -83,7 +86,8 @@ const source = [
             }
         ],
         uint: 'U',
-        more_icon: require('../../../assets/images/count_card/arrow_2.png')
+        more_icon: require('../../../assets/images/count_card/arrow_2.png'),
+        bg_icon:require('../../../assets/images/count_card/card_3.png')
     },
     {
         icon: 'icon-a-bianzu51',
@@ -120,7 +124,8 @@ const source = [
             },
         ],
         uint: 'U',
-        more_icon: require('../../../assets/images/count_card/arrow_3.png')
+        more_icon: require('../../../assets/images/count_card/arrow_3.png'),
+        bg_icon:require('../../../assets/images/count_card/card_4.png')
     }
 ]
 
@@ -206,6 +211,9 @@ const CountCard = (): ReactElement<ReactNode> => {
                                 </div>
                                 <div className='item-count'>
                                     <p className='count-text'>{item.count}&nbsp;{item.uint && item.uint}</p>
+                                </div>
+                                <div className='item-bg-icon'>
+                                    <img src={item.bg_icon} alt="" />
                                 </div>
                             </li>
                         )

@@ -44,7 +44,6 @@ const FilterDeposit = (): ReactElement<ReactNode> => {
     return (
         <div className='filter-deposit filter-public'>
             <p className='iconfont icon-shaixuan' onClick={() => {
-                console.log('充币筛选');
                 setFilterBox(true);
             }}></p>
             {/* 筛选弹框 */}
@@ -150,7 +149,7 @@ const FilterDeposit = (): ReactElement<ReactNode> => {
                                         ...filterMsg,
                                         max: e.target.value
                                     })
-                                }} placeholder='最小金额' />
+                                }} placeholder='最大金额' />
                             </div>
                         </div>
                     </div>

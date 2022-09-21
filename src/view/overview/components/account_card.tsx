@@ -44,7 +44,7 @@ const AccountCard = (): ReactElement<ReactNode> => {
             <div className='ib-avatar'>
                 <img src={require('../../../assets/images/ib_avatar.png')} alt="" />
             </div>
-            <p className='account-name' onClick={account.is_admin ? () => {
+            <p className='account-name' onClick={admin ? () => {
                 setSelectMerchantBox(true)
             } : () => { }}>{account.name}
                 {admin && <img src={require('../../../assets/images/down_icon.png')} alt="" />}

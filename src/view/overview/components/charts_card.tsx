@@ -36,19 +36,19 @@ const ChartsCard = (): ReactElement<ReactNode> => {
             end: filterDate.end
         });
         const { data } = result;
-        const date = data.deposits.map((item: { date: any; }) => {
-            return item.date;
+        const date = data.deposits.map((item: { date: string; }) => {
+            return item.date.substring(5,10);
         });
-        const deposits = data.deposits.map((item: { total: any; }) => {
+        const deposits = data.deposits.map((item: { total: string; }) => {
             return item.total;
         });
-        const withdraw = data.withdraw.map((item: { total: any; }) => {
+        const withdraw = data.withdraw.map((item: { total: string; }) => {
             return item.total;
         });
-        const userDeposits = data.userDeposits.map((item: { total: any; }) => {
+        const userDeposits = data.userDeposits.map((item: { total: string; }) => {
             return item.total;
         });
-        const userWithdraw = data.userWithdraw.map((item: { total: any; }) => {
+        const userWithdraw = data.userWithdraw.map((item: { total: string; }) => {
             return item.total;
         });
         initEcharts(date,deposits,withdraw,userDeposits,userWithdraw)

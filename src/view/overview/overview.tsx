@@ -1,5 +1,5 @@
 
-import { ReactElement, ReactNode, useEffect } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import AccountCard from './components/account_card';
 import BalanceCard from './components/balance_card';
 import ChartsCard from './components/charts_card';

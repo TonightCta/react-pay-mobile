@@ -26,13 +26,13 @@ const NavBottom = (): ReactElement<ReactNode> => {
     const tabs = [
         {
             key: 'home',
-            title: '首页',
-            icon: <AppOutline />,
+            title: '概览',
+            icon: <span className='iconfont icon-overview'></span>,
         },
         {
             key: 'todo',
             title: '商家',
-            icon: <UnorderedListOutline />,
+            icon: <span className='iconfont icon-merchant'></span>,
         }
     ];
     return (

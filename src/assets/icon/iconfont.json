@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "31953814",
+      "name": "overview",
+      "font_class": "overview",
+      "unicode": "e636",
+      "unicode_decimal": 58934
+    },
+    {
+      "icon_id": "31953815",
+      "name": "merchant",
+      "font_class": "merchant",
+      "unicode": "e637",
+      "unicode_decimal": 58935
+    },
+    {
       "icon_id": "31853330",
       "name": "fuzhi备份 2",
       "font_class": "a-fuzhibeifen2",
