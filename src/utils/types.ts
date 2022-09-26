@@ -5,7 +5,8 @@ export interface State{
     list_type?:number,
     filter_withdraw?:string,
     filter_deposit?:string,
-    merchant_id?:string
+    merchant_id?:string,
+    market?:string
 }
 
 export enum Type{
@@ -14,7 +15,8 @@ export enum Type{
     SET_WITHDRAW_FILTER = 'set_withdraw_filter',
     SET_DEPOSIT_FILTER = 'set_deposit_filter',
     SET_ACCOUNT = 'set_account',
-    SET_MERCHANT = 'set_merchant'
+    SET_MERCHANT = 'set_merchant',
+    SET_MARKET = 'set_market'
 };
 
 export interface FilterW{

@@ -154,11 +154,6 @@ input {
     outline: none;
 }
 
-.adm-popup-body {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-}
-
 button {
     border: 0;
     outline: none;

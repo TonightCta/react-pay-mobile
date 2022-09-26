@@ -4,7 +4,6 @@ import { Outlet, Navigate } from 'react-router-dom';
 import { IBPayMobile } from './route/router';
 import { useContext } from 'react';
 import NavBottom from './components/nav/nav';
-import './assets/css/reset.css'
 
 const App = (): ReactElement => {
   const { state } = useContext(IBPayMobile);

@@ -12,16 +12,16 @@ const RouteConfig = (): ReactElement<ReactNode> => {
     const [state, dispatch] = useReducer(initState, defaultState, defaultStateInit);
     return (
         <HashRouter>
-            <IBPayMobile.Provider value={{state,dispatch}}>
+            <IBPayMobile.Provider value={{ state, dispatch }}>
                 <Routes>
                     <Route path='/' element={<App />}>
                         {/* 概览 */}
                         <Route index element={<Suspense fallback={<RouteLoading />}>
-                            <View.OverView/>
+                            <View.OverView />
                         </Suspense>}></Route>
                         {/* 商户 */}
                         <Route path='/merchant' element={<Suspense fallback={<RouteLoading />}>
-                            <View.MerchantView/>
+                            <View.MerchantView />
                         </Suspense>}></Route>
                     </Route>
                     {/* 登录 */}
@@ -32,6 +32,13 @@ const RouteConfig = (): ReactElement<ReactNode> => {
                     <Route path='*' element={<Suspense fallback={<RouteLoading />}>
                         <View.NotFoundView />
                     </Suspense>} />
+                    {/* Unknow */}
+                    {/* <Route path='/market' element={<Suspense fallback={<RouteLoading />}>
+                        <View.UnKnow />
+                    </Suspense>} />
+                    <Route path='/market-detail' element={<Suspense fallback={<RouteLoading />}>
+                        <View.MarketDetail />
+                    </Suspense>} /> */}
                 </Routes>
             </IBPayMobile.Provider>
         </HashRouter>

@@ -8,7 +8,8 @@ export const defaultState: State = {
     list_type: Number(sessionStorage.getItem('list_type')) || 1,
     filter_withdraw: '',
     filter_deposit: '',
-    merchant_id:localStorage.getItem('merchant_id') || '',
+    merchant_id: localStorage.getItem('merchant_id') || '',
+    market: localStorage.getItem('merket') || '{}'
 };
 
 export const defaultContext: Context = {
@@ -39,8 +40,11 @@ export const initState = (state: State, action: IAction) => {
             sessionStorage.setItem('filter_deposit', payload.filter_deposit as string);
             return { ...state, filter_deposit: payload.filter_deposit }
         case Type.SET_MERCHANT:
-            localStorage.setItem('merchant_id',payload.merchant_id as string);
-            return { ...state,merchant_id:payload.merchant_id }
+            localStorage.setItem('merchant_id', payload.merchant_id as string);
+            return { ...state, merchant_id: payload.merchant_id }
+        case Type.SET_MARKET:
+            localStorage.setItem('market', payload.market as string);
+            return { ...state, market: payload.market }
         default:
             return state;
     }

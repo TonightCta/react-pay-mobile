@@ -3,6 +3,8 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import RouteConfig from './route/router'
 import './assets/icon/iconfont.css'
+import './assets/css/reset.css'
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
