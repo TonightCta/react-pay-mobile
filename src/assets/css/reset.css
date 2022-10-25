@@ -113,7 +113,7 @@ html {
 
 body {
     line-height: 1;
-    background-color: #F2F2F2;
+    background-color: white;
 }
 
 ol,
@@ -145,9 +145,9 @@ table {
     font-family: '微软雅黑', "Poppins", "PingFang SC" !important;
 }
 
-:root:root {
-    --adm-color-primary: #2D3EC7;
-}
+/* :root:root {
+    --adm-color-primary: #08D167;
+} */
 
 input {
     border: 0;

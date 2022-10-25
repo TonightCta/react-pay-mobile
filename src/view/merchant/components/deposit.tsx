@@ -54,7 +54,7 @@ const DepositList = (): ReactElement<ReactNode> => {
             amountUpperLimit: filter.max ? filter.max : '',
             toAddress: filter.address ? filter.address : '',
             txHash: filter.hash ? filter.hash : '',
-            status: filter.status ? filter.status : '',
+            state: filter.status ? filter.status : '',
             merchant_id: filter.merchant ? filter.merchant : '',
             limit: 10,
             isMerchant:1,

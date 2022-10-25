@@ -126,6 +126,26 @@ const source = [
         uint: 'U',
         more_icon: require('../../../assets/images/count_card/arrow_3.png'),
         bg_icon:require('../../../assets/images/count_card/card_4.png')
+    },
+    {
+        icon: 'icon-a-bianzu511',
+        title: '已结利润',
+        count: 0,
+        background: 'linear-gradient(46deg, #FFC970 0%, #F39F47 100%)',
+        more: [
+            {
+                name: '商户',
+                list: [
+                    {
+                        coin: 'BTC',
+                        total: 0
+                    }
+                ],
+            },
+        ],
+        uint: 'U',
+        more_icon: require('../../../assets/images/count_card/arrow_5.png'),
+        bg_icon:require('../../../assets/images/count_card/card_5.png')
     }
 ]
 
@@ -158,6 +178,8 @@ const CountCard = (): ReactElement<ReactNode> => {
         list[3].more[0].list = data.allDepositFee;
         list[3].more[1].list = data.allWithdrawFee;
         list[3].more[2].list = data.allMinerFee;
+        list[4].count = data.totalCheckout.toFixed(0);
+        list[4].more[0].list = data.checkoutHistory;
         setList([...list])
     }
     const PopCon = (props: { list: Inner[] }): ReactElement => {

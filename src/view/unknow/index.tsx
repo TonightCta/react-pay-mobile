@@ -3,7 +3,6 @@ import { Badge, Tabs } from 'antd-mobile';
 import { ReactElement, ReactNode } from 'react';
 import List from './components/list';
 import './index.scss'
-import { useState } from 'react';
 import HistoryList from './components/history';
 
 const UnKnow = (): ReactElement<ReactNode> => {

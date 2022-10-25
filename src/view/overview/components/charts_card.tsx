@@ -93,7 +93,6 @@ const ChartsCard = (): ReactElement<ReactNode> => {
                     "商户提币",
                     "用户提币",
                     "用户充值",
-                    "Search Engine",
                 ],
                 icon: "circle",
                 itemWidth: 6,

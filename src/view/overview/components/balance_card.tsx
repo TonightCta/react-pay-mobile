@@ -1,10 +1,11 @@
 
-import { Popover, Toast } from 'antd-mobile';
+import { Popover, Popup, Toast } from 'antd-mobile';
 import { ReactElement, ReactNode, useState } from 'react';
 import { useContext } from 'react';
 import { IBPayMobile } from '../../../route/router';
 import { useEffect } from 'react';
 import { WalletViewApi } from '../../../request/api';
+import copy from 'copy-to-clipboard'
 
 interface Balance {
     icon: string,
@@ -18,7 +19,8 @@ interface Balance {
 
 interface Inner {
     coin: string,
-    amount: number
+    amount: number,
+    address: string
 }
 
 const source = [
@@ -31,7 +33,8 @@ const source = [
         detail: [
             {
                 coin: 'USDT-TRC20',
-                amount: 0
+                amount: 0,
+                address: ''
             }
         ]
     },
@@ -45,7 +48,8 @@ const source = [
         detail: [
             {
                 coin: 'USDT-TRC20',
-                amount: 0
+                amount: 0,
+                address: ''
             }
         ]
     },
@@ -58,7 +62,8 @@ const source = [
         detail: [
             {
                 coin: 'USDT-TRC20',
-                amount: 0
+                amount: 0,
+                address: ''
             }
         ]
     },
@@ -72,11 +77,13 @@ const source = [
         detail: [
             {
                 coin: 'USDT-TRC20',
-                amount: 0
+                amount: 0,
+                address: ''
             },
             {
                 coin: 'TRX',
-                amount: 0
+                amount: 0,
+                address: ''
             }
         ]
     },
@@ -90,9 +97,6 @@ const BalanceCard = (): ReactElement<ReactNode> => {
             setList(source)
         }
     }, []);
-    useEffect(() => {
-        walletViewService();
-    },[state.merchant_id])
     const walletViewService = async () => {
         const { merchant_id } = state;
         const reuslt = await WalletViewApi({
@@ -109,7 +113,13 @@ const BalanceCard = (): ReactElement<ReactNode> => {
         list[3].count = data.userFeeAvailableTotal;
         list[3].detail = data.userFeeAvailable;
         setList([...list])
-    }
+    };
+    useEffect(() => {
+        walletViewService();
+    }, [state.merchant_id])//eslint-disable-line
+    //地址展示弹框
+    const [copyAddressBox, setCopyAddressBox] = useState<boolean>(false);
+    const [addressList, setAddressList] = useState<{ coin: string, address: string }[]>([]);
     const PopBalance = (props: { list: Inner[] }): ReactElement => {
         return (
             <div className='popver-content'>
@@ -127,7 +137,7 @@ const BalanceCard = (): ReactElement<ReactNode> => {
                 </ul>
             </div>
         )
-    }
+    };
     return (
         <div className='balance-card'>
             <ul>
@@ -149,16 +159,35 @@ const BalanceCard = (): ReactElement<ReactNode> => {
                                             </Popover>}
                                         </div>
                                         <p className='inner-count'>{Number(item.count).toFixed(4)}&nbsp;{item.uint}</p>
-                                        <Popover
-                                            content={<PopBalance list={item.detail} />}
-                                            trigger='click'
-                                            placement='bottom'
-                                        >
-                                            <p className='coin-detail'>
-                                                币种明细
-                                                <span className='iconfont icon-xialajiantouxiaobeifen'></span>
-                                            </p>
-                                        </Popover>
+                                        <div className='card-oper'>
+                                            <Popover
+                                                content={<PopBalance list={item.detail} />}
+                                                trigger='click'
+                                                placement='bottom'
+                                            >
+                                                <p className='coin-detail'>
+                                                    币种明细
+                                                    <span className='iconfont icon-xialajiantouxiaobeifen'></span>
+                                                </p>
+                                            </Popover>
+                                            {
+                                                item.btn === 'deposit' && <p className='coin-detail address-detail' onClick={() => {
+                                                    const { detail } = item;
+                                                    const address: ({ coin: string, address: string })[] = [];
+                                                    detail.forEach((e: Inner) => {
+                                                        address.push({
+                                                            coin: e.coin,
+                                                            address: e.address
+                                                        });
+                                                    });
+                                                    setAddressList([...address]);
+                                                    setCopyAddressBox(true);
+                                                }}>
+                                                    地址管理
+                                                    <span className='iconfont icon-xialajiantouxiaobeifen'></span>
+                                                </p>
+                                            }
+                                        </div>
                                     </div>
                                 </div>
                                 <div className='oper-btn'>
@@ -171,6 +200,40 @@ const BalanceCard = (): ReactElement<ReactNode> => {
                     })
                 }
             </ul>
+            {/* 复制地址 */}
+            <Popup
+                visible={copyAddressBox}
+                onMaskClick={() => {
+                    setCopyAddressBox(false)
+                }}
+                bodyStyle={{ height: '60vh' }}
+            >
+                <div className='copy-address-box'>
+                    <p className='iconfont icon-close2' onClick={() => {
+                        setCopyAddressBox(false)
+                    }}></p>
+                    <ul>
+                        {
+                            addressList.map((item: { coin: string, address: string }, index: number): ReactElement => {
+                                return (
+                                    <li key={index}>
+                                        <div className='left-address'>
+                                            <p>
+                                                <span> {item.coin}</span>
+                                            </p>
+                                            <p>{item.address ? item.address : '-'}</p>
+                                        </div>
+                                        <p className='copy-btn' onClick={() => {
+                                            copy(item.address);
+                                            Toast.show(`复制 ${item.coin} 地址成功`);
+                                        }}>复制</p>
+                                    </li>
+                                )
+                            })
+                        }
+                    </ul>
+                </div>
+            </Popup>
         </div>
     )
 };
