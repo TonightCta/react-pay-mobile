@@ -50,6 +50,7 @@ const AccountCard = (): ReactElement<ReactNode> => {
         id: '',
     });
     const { deposit_fee } = state || [];
+    console.log(state)
     const [visible, setVisible] = useState<boolean>(false);
     const [assetType, setAssetType] = useState<number>(1)
     useEffect(() => {
@@ -83,6 +84,9 @@ const AccountCard = (): ReactElement<ReactNode> => {
                         })
                     }
                 </ul>
+                {
+                    deposit_fee?.length  === 0 && <p className='no-data'>暂无数据</p>
+                }
             </div>
         )
     };

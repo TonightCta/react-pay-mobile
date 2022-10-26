@@ -28,9 +28,9 @@ const ChartsCard = (): ReactElement<ReactNode> => {
         end: ''
     });
     const billViewService = async () => {
-        const { merchant_id } = state;
+        const { merchant_id,account } = state;
         const result = await BillViewApi({
-            mch_id: merchant_id,
+            mch_id: merchant_id || JSON.parse(account || '{}')?.merchantInfo.mch_id,
             coin: coin,
             start: filterDate.start,
             end: filterDate.end

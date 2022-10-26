@@ -75,12 +75,12 @@
         color: #5e6ffe;
         height: 30px;
       }
-      button:last-child{
-        span{
+      button:last-child {
+        span {
           display: inline-block;
           transform: translateY(-1px);
         }
-        .iconfont{
+        .iconfont {
           transform: translateY(1px);
         }
       }
@@ -374,6 +374,11 @@
       }
     }
   }
+  .no-data {
+    padding: 12px 24px;
+    font-size: 12px;
+    color: #666;
+  }
   .balance-pop {
     li {
       display: flex;
@@ -467,7 +472,7 @@
   .adm-center-popup-wrap {
     min-width: 335px;
   }
-  .adm-modal-body{
+  .adm-modal-body {
     max-height: none;
   }
   .adm-center-popup-body {
@@ -518,7 +523,7 @@
               justify-content: center;
               .iconfont {
                 font-size: 12px;
-                transform: scale(.7);
+                transform: scale(0.7);
                 color: white;
               }
             }
@@ -529,8 +534,8 @@
               height: 44px;
               align-items: center;
               background-color: #fafaff;
-              transition: .1s all;
-              border: 1px solid rgba(0,0,0,0);
+              transition: 0.1s all;
+              border: 1px solid rgba(0, 0, 0, 0);
               border-radius: 4px;
               padding-left: 8px;
               padding-right: 14px;
@@ -566,15 +571,15 @@
           li:last-child {
             margin-bottom: 0;
           }
-          .active-settlement{
-            .select-radio{
-              background-color: #4266FF;
-              transition: .1s all;
+          .active-settlement {
+            .select-radio {
+              background-color: #4266ff;
+              transition: 0.1s all;
             }
-            .select-type{
-              border-color:#4266FF;
-              .type-balance{
-                span{
+            .select-type {
+              border-color: #4266ff;
+              .type-balance {
+                span {
                   display: block;
                 }
               }
@@ -600,27 +605,27 @@
               margin-top: 2px;
               padding-left: 8px;
             }
-            .iconfont{
+            .iconfont {
               position: absolute;
               font-size: 16px;
               right: 8px;
               color: #999;
               bottom: 6px;
             }
-            .send-code{
+            .send-code {
               position: absolute;
               font-size: 12px;
-              color: #4266FF;
+              color: #4266ff;
               right: 8px;
               bottom: 8px;
             }
-            .disable-send{
+            .disable-send {
               filter: grayscale(1);
               cursor: no-drop;
             }
-            .send-code::before{
-              content: '';
-              display:inline-block;
+            .send-code::before {
+              content: "";
+              display: inline-block;
               width: 1px;
               height: 14px;
               background-color: #eee;
