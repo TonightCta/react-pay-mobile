@@ -4,7 +4,8 @@ const OverView = React.lazy(() => import('../view/overview/overview'));
 const MerchantView = React.lazy(() => import('../view/merchant/merchant'));
 const NotFoundView = React.lazy(() => import('../view/not_found/n_found'));
 const UnKnow = React.lazy(() => import('../view/unknow/index'));
-const MarketDetail = React.lazy(() => import('../view/unknow/detail/detail'))
+const MarketDetail = React.lazy(() => import('../view/unknow/detail/detail'));
+const FeeIndex = React.lazy(() => import('../view/fee/index'))
 
 export {
     LoginView,
@@ -12,5 +13,6 @@ export {
     MerchantView,
     NotFoundView,
     UnKnow,
-    MarketDetail
+    MarketDetail,
+    FeeIndex
 }

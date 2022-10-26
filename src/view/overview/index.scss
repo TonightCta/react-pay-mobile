@@ -63,6 +63,35 @@
       border: 1px solid rgba(14, 175, 102, 0.5);
       color: #0eaf66;
     }
+    .account-oper {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      button {
+        font-size: 12px;
+        width: calc(33% - 6px);
+        background-color: #f2f3ff;
+        border: 0;
+        color: #5e6ffe;
+        height: 30px;
+      }
+      button:last-child{
+        span{
+          display: inline-block;
+          transform: translateY(-1px);
+        }
+        .iconfont{
+          transform: translateY(1px);
+        }
+      }
+    }
+    .oper-line {
+      width: calc(100% - 180px);
+      margin: 0 auto;
+      height: 1px;
+      background-color: #f8f8f8;
+      margin-bottom: 12px;
+    }
     .login-msg {
       display: flex;
       justify-content: space-between;
@@ -183,10 +212,10 @@
             font-weight: 500;
             margin: 8px 0;
           }
-          .card-oper{
+          .card-oper {
             display: flex;
             align-items: center;
-            .address-detail{
+            .address-detail {
               margin-left: 12px;
             }
           }
@@ -405,7 +434,7 @@
             display: inline-block;
             border-radius: 2px;
             color: #4266ff;
-            font-weight:bold;
+            font-weight: bold;
             font-size: 12px;
           }
           margin-bottom: 4px;
@@ -426,11 +455,199 @@
         margin-left: 4px;
       }
     }
-    li:first-child{
+    li:first-child {
       padding-top: 0;
     }
     li:last-child {
       border: 0;
+    }
+  }
+}
+.oper-assets-modal {
+  .adm-center-popup-wrap {
+    min-width: 335px;
+  }
+  .adm-modal-body{
+    max-height: none;
+  }
+  .adm-center-popup-body {
+    padding-top: 12px;
+    .adm-modal-content {
+      padding: 0 16px;
+      max-height: none;
+    }
+    .modal-content {
+      .content-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        p:nth-child(2) {
+          font-size: 14px;
+          color: #333;
+          font-weight: 500;
+        }
+        .iconfont {
+          color: #999;
+        }
+      }
+      .content-inner {
+        margin-top: 8px;
+        .inner-title {
+          text-align: left;
+          font-size: 14px;
+          color: #333;
+          font-weight: 500;
+          span {
+            font-size: 12px;
+          }
+        }
+        ul {
+          margin-top: 12px;
+          li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            .select-radio {
+              width: 14px;
+              height: 14px;
+              border-radius: 50%;
+              border: 1px solid #a7b7ff;
+              display: flex;
+              align-items: center;
+              margin-right: 6px;
+              justify-content: center;
+              .iconfont {
+                font-size: 12px;
+                transform: scale(.7);
+                color: white;
+              }
+            }
+            .select-type {
+              display: flex;
+              justify-content: space-between;
+              flex: 1;
+              height: 44px;
+              align-items: center;
+              background-color: #fafaff;
+              transition: .1s all;
+              border: 1px solid rgba(0,0,0,0);
+              border-radius: 4px;
+              padding-left: 8px;
+              padding-right: 14px;
+              .type-left {
+                display: flex;
+                align-items: center;
+                img {
+                  width: 17px;
+                  height: 17px;
+                }
+                p {
+                  margin-left: 7px;
+                  font-size: 12px;
+                  color: #333;
+                  font-weight: 500;
+                }
+              }
+              .type-balance {
+                font-size: 15px;
+                color: #666;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                span {
+                  font-size: 12px;
+                  margin-left: 6px;
+                  color: #4266ff;
+                  display: none;
+                }
+              }
+            }
+          }
+          li:last-child {
+            margin-bottom: 0;
+          }
+          .active-settlement{
+            .select-radio{
+              background-color: #4266FF;
+              transition: .1s all;
+            }
+            .select-type{
+              border-color:#4266FF;
+              .type-balance{
+                span{
+                  display: block;
+                }
+              }
+            }
+          }
+        }
+        .inp-box {
+          margin-top: 12px;
+          .inp-box-inner {
+            margin-bottom: 10px;
+            text-align: left;
+            position: relative;
+            .inner-label {
+              font-size: 12px;
+              color: #333;
+              font-weight: 500;
+            }
+            input {
+              width: 100%;
+              height: 34px;
+              border-radius: 4px;
+              border: 1px solid #f6f6f6;
+              margin-top: 2px;
+              padding-left: 8px;
+            }
+            .iconfont{
+              position: absolute;
+              font-size: 16px;
+              right: 8px;
+              color: #999;
+              bottom: 6px;
+            }
+            .send-code{
+              position: absolute;
+              font-size: 12px;
+              color: #4266FF;
+              right: 8px;
+              bottom: 8px;
+            }
+            .disable-send{
+              filter: grayscale(1);
+              cursor: no-drop;
+            }
+            .send-code::before{
+              content: '';
+              display:inline-block;
+              width: 1px;
+              height: 14px;
+              background-color: #eee;
+              margin-right: 8px;
+              transform: translateY(3px);
+            }
+          }
+          .submit-btn {
+            margin-top: 12px;
+            display: flex;
+            button {
+              height: 36px;
+              font-size: 14px;
+            }
+            button:first-child {
+              width: 114px;
+              margin-right: 12px;
+              background-color: white;
+              color: #999;
+              border-color: #eee;
+            }
+            button:last-child {
+              flex: 1;
+            }
+          }
+        }
+      }
     }
   }
 }

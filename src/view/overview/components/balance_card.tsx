@@ -6,6 +6,7 @@ import { IBPayMobile } from '../../../route/router';
 import { useEffect } from 'react';
 import { WalletViewApi } from '../../../request/api';
 import copy from 'copy-to-clipboard'
+import { Type } from '../../../utils/types';
 
 interface Balance {
     icon: string,
@@ -17,7 +18,7 @@ interface Balance {
     btn: string,
 }
 
-interface Inner {
+export interface Inner {
     coin: string,
     amount: number,
     address: string
@@ -91,16 +92,16 @@ const source = [
 
 const BalanceCard = (): ReactElement<ReactNode> => {
     const [list, setList] = useState<Balance[]>(source);
-    const { state } = useContext(IBPayMobile);
+    const { state, dispatch } = useContext(IBPayMobile);
     useEffect(() => {
         return () => {
             setList(source)
         }
     }, []);
     const walletViewService = async () => {
-        const { merchant_id } = state;
+        const { merchant_id,account } = state;
         const reuslt = await WalletViewApi({
-            mch_id: merchant_id
+            mch_id: merchant_id || JSON.parse(account || '{}')?.merchantInfo.mch_id
         });
         const list = source;
         const { data } = reuslt;
@@ -112,11 +113,24 @@ const BalanceCard = (): ReactElement<ReactNode> => {
         list[2].detail = data.userAvailable;
         list[3].count = data.userFeeAvailableTotal;
         list[3].detail = data.userFeeAvailable;
+        const arr: Inner[] = data.usersDeposits.map((item: { total: string; coin: string; url: string; }) => {
+            return {
+                amount: item.total,
+                coin: item.coin,
+                address: item.url
+            }
+        })
+        dispatch({
+            type: Type.SET_DEPOSIT_FEE,
+            payload: {
+                deposit_fee: arr
+            }
+        });
         setList([...list])
     };
     useEffect(() => {
         walletViewService();
-    }, [state.merchant_id])//eslint-disable-line
+    }, [state.merchant_id,state.reload])//eslint-disable-line
     //地址展示弹框
     const [copyAddressBox, setCopyAddressBox] = useState<boolean>(false);
     const [addressList, setAddressList] = useState<{ coin: string, address: string }[]>([]);

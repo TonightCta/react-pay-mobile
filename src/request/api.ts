@@ -27,4 +27,13 @@ export const MerchantListApi = (p: o) => post<IResponse>('/assets/merchants', p)
 export const SetHashApi = (p: o) => post<IResponse>('/userWithdraw/pass', p);
 //拒绝提币
 export const RejectWithdrawApi = (p: o) => post<IResponse>('/userWithdraw/reject', p);
-
+//结算利润检查
+export const CheckProfitApi = (p:o) => post<IResponse>('/manager/beforeCheckoutProfit',p);
+//结算利润发起
+export const SettleProfitApi = (p:o) => post<IResponse>('/manager/checkoutProfit',p);
+//提取余额检查
+export const CheckBalanceApi = (p:o) => post<IResponse>('/manager/beforeCheckoutBalance',p);
+//提取余额发起
+export const ClearBalanceApi = (p:o) => post<IResponse>('/manager/checkoutBalance',p);
+//清算历史
+export const ButtlistApi = (p:o) => post<IResponse>('/analysis/profitHistory',p);

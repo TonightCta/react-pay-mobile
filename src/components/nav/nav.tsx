@@ -1,20 +1,24 @@
 
-import { ReactElement, ReactNode, useState } from 'react';
+import { ReactElement, ReactNode, useState, useEffect, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { AppOutline, UnorderedListOutline } from 'antd-mobile-icons';
 import { TabBar } from 'antd-mobile'
 import './index.scss'
-import { useEffect } from 'react';
+import { IBPayMobile } from '../../route/router';
 
 const NavBottom = (): ReactElement<ReactNode> => {
     const navigate = useNavigate();
     const location = useLocation();
+    const { state } = useContext(IBPayMobile);
+    const admin = JSON.parse(state.account || '{}')?.merchantInfo.is_admin;
     const [activeRouter, setActiveRouter] = useState<string>('home')
     useEffect(() => {
         const { pathname } = location;
         switch (pathname) {
             case '/':
                 setActiveRouter('home')
+                break;
+            case '/fee':
+                setActiveRouter('fee');
                 break;
             case '/merchant':
                 setActiveRouter('todo');
@@ -23,11 +27,27 @@ const NavBottom = (): ReactElement<ReactNode> => {
                 setActiveRouter('home')
         }
     }, [])
-    const tabs = [
+    const tabs = !!admin ? [
         {
             key: 'home',
             title: '概览',
-            icon: <span className='iconfont icon-overview'></span>,
+            icon: <span className='iconfont icon-a-bianzu71'></span>,
+        },
+        {
+            key: 'fee',
+            title: '利润/余额',
+            icon: <span className='iconfont icon-a-bianzu7'></span>,
+        },
+        {
+            key: 'todo',
+            title: '商家',
+            icon: <span className='iconfont icon-merchant'></span>,
+        }
+    ] : [
+        {
+            key: 'home',
+            title: '概览',
+            icon: <span className='iconfont icon-a-bianzu71'></span>,
         },
         {
             key: 'todo',
@@ -42,6 +62,10 @@ const NavBottom = (): ReactElement<ReactNode> => {
                     case 'home':
                         navigate('/');
                         setActiveRouter('home')
+                        break;
+                    case 'fee':
+                        navigate('/fee');
+                        setActiveRouter('fee')
                         break;
                     case 'todo':
                         navigate('/merchant');

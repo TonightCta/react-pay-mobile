@@ -6,6 +6,10 @@ import { IBPayMobile } from '../../../route/router';
 import { useEffect } from 'react';
 import SelectMerchant from '../../merchant/components/filter/components/select_merchant';
 import { Type } from '../../../utils/types';
+import { Button, Popover, Toast } from 'antd-mobile';
+import OperAssets from './oper_assets';
+import { CheckBalanceApi, CheckProfitApi } from '../../../request/api';
+import { Inner } from './balance_card';
 
 interface Account {
     name: string,
@@ -14,7 +18,22 @@ interface Account {
     is_admin: boolean,
     last_login_time: string,
     mch_id: string,
+    id: string
 }
+
+export interface Profit {
+    trx: number,
+    usdt: number,
+    mch_id: string
+}
+
+export interface Balance {
+    trx: number,
+    trx2: number,
+    usdt: number,
+    mch_id: string
+}
+
 
 const AccountCard = (): ReactElement<ReactNode> => {
     const navigate = useNavigate();
@@ -28,10 +47,45 @@ const AccountCard = (): ReactElement<ReactNode> => {
         is_admin: false,
         last_login_time: '',
         mch_id: '',
+        id: '',
     });
+    const { deposit_fee } = state || [];
+    const [visible, setVisible] = useState<boolean>(false);
+    const [assetType, setAssetType] = useState<number>(1)
     useEffect(() => {
         setAccount(JSON.parse(state.account || '{}')?.merchantInfo);
     }, []);
+    //利润信息
+    const [settleMsg, setSettleMsg] = useState<Profit>({
+        trx: 0,
+        usdt: 0,
+        mch_id: account.mch_id,
+    });
+    //余额信息
+    const [balanceMsg, setBalanceMsg] = useState<Balance>({
+        trx: 0,
+        trx2: 0,
+        usdt: 0,
+        mch_id: account.mch_id,
+    });
+    const PopBalance = (): ReactElement => {
+        return (
+            <div className='popver-content'>
+                <ul className='balance-pop'>
+                    {
+                        (deposit_fee as []).map((item: Inner, index: number): ReactElement => {
+                            return (
+                                <li key={index}>
+                                    <p>{item.coin}</p>
+                                    <p>{item.amount}</p>
+                                </li>
+                            )
+                        })
+                    }
+                </ul>
+            </div>
+        )
+    };
     return (
         <div className='account-card'>
             <div className='sign-out' onClick={() => {
@@ -55,6 +109,76 @@ const AccountCard = (): ReactElement<ReactNode> => {
                     {account.ga === 0 && <img src={require('../../../assets/images/right_arrow.png')} alt="" />}
                 </div>
             }
+            {/* 账户操作 */}
+            {
+                admin && <div className='account-oper'>
+                    <Button color='primary' size='small' onClick={async () => {
+                        Toast.show({
+                            content: '查询中...',
+                            duration: 0,
+                            icon: 'loading',
+                        })
+                        const result = await CheckProfitApi({
+                            mchId: account.mch_id ? account.mch_id : account.id
+                        });
+                        const { code, data } = result;
+                        Toast.clear();
+                        if (code !== 200) {
+                            Toast.show(result.message);
+                            return
+                        }
+                        if (!data.needCheckout) {
+                            Toast.show(`最少结算数量为 ${data.minUsdtProfit} USDT`);
+                            return
+                        };
+                        setSettleMsg({
+                            ...settleMsg,
+                            trx: data.trxProfit,
+                            usdt: data.usdtProfit,
+                        });
+                        setAssetType(1);
+                        setVisible(true);
+                    }}>利润结算</Button>
+                    <Button color='primary' size='small' onClick={async () => {
+                        Toast.show({
+                            content: '查询中...',
+                            duration: 0,
+                            icon: 'loading',
+                        })
+                        const result = await CheckBalanceApi({
+                            mchId: account.mch_id ? account.mch_id : account.id
+                        });
+                        const { code, data } = result;
+                        Toast.clear();
+                        if (code !== 200) {
+                            Toast.show(result.message);
+                            return
+                        }
+                        setBalanceMsg({
+                            ...balanceMsg,
+                            trx: data.mchFeeAvailableTotal,
+                            trx2: data.userFeeAvailableTotal,
+                            usdt: data.mchAvailableTotal,
+                        });
+                        setAssetType(2);
+                        setVisible(true);
+                    }}>提取余额</Button>
+
+                    <Popover
+                        content={<PopBalance/>}
+                        trigger='click'
+                        placement='bottom'
+                    >
+                        <Button color='primary' size='small'>
+                            充值收益
+                            <span className='iconfont icon-shangxia'></span>
+                        </Button>
+                    </Popover>
+                </div>
+            }
+            {
+                admin && <p className='oper-line'></p>
+            }
             <div className='login-msg'>
                 <div className='msg-public'>
                     <p>上次登录时间</p>
@@ -74,8 +198,19 @@ const AccountCard = (): ReactElement<ReactNode> => {
                     payload: {
                         merchant_id: value.id
                     }
+                });
+                setSettleMsg({
+                    ...settleMsg,
+                    mch_id: value.id
+                })
+                setBalanceMsg({
+                    ...balanceMsg,
+                    mch_id: value.id
                 })
             }} />
+            <OperAssets value={visible} profit={settleMsg} balance={balanceMsg} resetModal={(val: boolean): void => {
+                setVisible(val);
+            }} type={assetType} />
         </div>
     )
 };

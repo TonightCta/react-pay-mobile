@@ -1,3 +1,4 @@
+import { Inner } from "../view/overview/components/balance_card"
 
 export interface State{
     app_token?:string,
@@ -5,8 +6,11 @@ export interface State{
     list_type?:number,
     filter_withdraw?:string,
     filter_deposit?:string,
+    filter_fee?:string,
     merchant_id?:string,
-    market?:string
+    market?:string,
+    deposit_fee?:Inner[],
+    reload?:number
 }
 
 export enum Type{
@@ -16,7 +20,10 @@ export enum Type{
     SET_DEPOSIT_FILTER = 'set_deposit_filter',
     SET_ACCOUNT = 'set_account',
     SET_MERCHANT = 'set_merchant',
-    SET_MARKET = 'set_market'
+    SET_MARKET = 'set_market',
+    SET_DEPOSIT_FEE = 'set_deposit_fee',
+    SET_RELOAD = 'set_reload',
+    SET_FILTER_FEE = 'set_filter_fee'
 };
 
 export interface FilterW{

@@ -15,20 +15,24 @@ const RouteConfig = (): ReactElement<ReactNode> => {
             <IBPayMobile.Provider value={{ state, dispatch }}>
                 <Routes>
                     <Route path='/' element={<App />}>
-                        概览
+                        {/* 概览 */}
                         <Route index element={<Suspense fallback={<RouteLoading />}>
                             <View.OverView />
                         </Suspense>}></Route>
-                        商户
+                        {/* 利润/余额 */}
+                        <Route path='/fee' element={<Suspense fallback={<RouteLoading />}>
+                            <View.FeeIndex />
+                        </Suspense>}></Route>
+                        {/* 商户 */}
                         <Route path='/merchant' element={<Suspense fallback={<RouteLoading />}>
                             <View.MerchantView />
                         </Suspense>}></Route>
                     </Route>
-                    登录
+                    {/* 登录 */}
                     <Route path='/login' element={<Suspense fallback={<RouteLoading />}>
                         <View.LoginView />
                     </Suspense>} />
-                    404
+                    {/* 404 */}
                     <Route path='*' element={<Suspense fallback={<RouteLoading />}>
                         <View.NotFoundView />
                     </Suspense>} />

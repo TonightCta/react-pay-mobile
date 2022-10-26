@@ -41,6 +41,7 @@
     }
     .adm-list-body {
       background-color: rgba(0, 0, 0, 0);
+      border: 0;
     }
     .list-public {
       .adm-center-popup-body {
@@ -238,6 +239,7 @@
       .adm-center-popup-body {
         padding-top: 0;
       }
+      
       .adm-dialog-content {
         padding: 20px;
         .hash-content {
